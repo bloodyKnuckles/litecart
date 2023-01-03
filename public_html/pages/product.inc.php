@@ -264,8 +264,11 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
-              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              if ('=' !== $value['price_operator']) {
+                if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+                else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              }
+              else { $price_adjust_text = ' &mdash; '; }
               $price_adjust_text .= currency::format(abs($value['price_adjust']));
             }
 
@@ -284,8 +287,11 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
-              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              if ('=' !== $value['price_operator']) {
+                if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+                else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              }
+              else { $price_adjust_text = ' &mdash; '; }
               $price_adjust_text .= currency::format(abs($value['price_adjust']));
             }
 
@@ -305,8 +311,11 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
-              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              if ('=' !== $value['price_operator']) {
+                if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+                else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              }
+              else { $price_adjust_text = ' &mdash; '; }
               $price_adjust_text .= currency::format(abs($value['price_adjust']));
             }
 
