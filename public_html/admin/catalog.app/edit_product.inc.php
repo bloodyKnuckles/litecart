@@ -587,12 +587,28 @@
                 </div>
               </div>
 
-              <?php if (in_array($option['function'], ['select', 'radio', 'checkbox'])) { ?>
+<?php
+
+if (in_array($option['function'], ['select', 'radio', 'checkbox'])) {
+
+  $default_selection_html = '';
+  switch ($option['function']) {
+    case 'checkbox':
+      $default_selection_html = '<input type="checkbox" name="default_selection[]" value="">';
+      break;
+    case 'radio':
+    case 'select':
+      $default_selection_html = '<input type="radio" name="default_selection" value="">';
+      break;
+  }
+
+?>
               <div class="table-responsive">
                 <table class="table table-striped table-hover table-dragable data-table">
                   <thead>
                     <tr>
                       <th class="main"><?php echo language::translate('title_option', 'Option'); ?></th>
+                      <th style="width: 150px;"><?php echo language::translate('title_default_selection', 'Default Selection'); ?></th>
                       <th style="width: 150px;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>
                       <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>
                       <th style="width: 85px;">&nbsp;</th>
@@ -600,9 +616,15 @@
                   </thead>
 
                   <tbody>
-                  <?php foreach ($option['values'] as $value_id => $value) { ?>
+<?php
+
+foreach ($option['values'] as $value_id => $value) {
+  $default_selection = (1 === $value['selected'])? ' checked="checked"': '';
+
+?>
                     <tr data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['options'][$group_id]['values'][$value_id]['name']); ?>">
                       <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
+                      <td class=""><?php echo str_replace('value=""', 'value="' . $value['group_id'] . ',' . $value['value_id'] . '"' . $default_selection, $default_selection_html); ?></td>
                       <td class="text-center"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
                       <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
                       <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
