@@ -296,7 +296,7 @@
             }
 
             $values .= '<div class="radio">' . PHP_EOL
-                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], $value['selected']?$value['name']:true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                      . '</div>';
           }
           break;
@@ -304,6 +304,7 @@
         case 'select':
 
           $options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
+          $value_selected = true;
           foreach ($group['values'] as $value) {
 
             $price_adjust_text = '';
@@ -319,10 +320,12 @@
               $price_adjust_text .= currency::format(abs($value['price_adjust']));
             }
 
+            if (1 === $value['selected']) $value_selected = $value['name'];
+
             $options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
           }
 
-          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required' : ''));
+          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, $value_selected, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required' : ''));
           break;
 
         case 'input': // Deprecated
