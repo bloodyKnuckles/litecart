@@ -489,6 +489,8 @@
                 $value['id'] = database::insert_id();
               }
 
+              $default_selection = ($value['id'] === $option['default_selection'])? 1: 0;
+              
               $sql_currencies = "";
               foreach (array_keys(currency::$currencies) as $currency_code) {
                 $sql_currencies .= $currency_code ." = '". (isset($value[$currency_code]) ? (float)$value[$currency_code] : 0) ."', ";
@@ -500,6 +502,7 @@
                   value_id = ". (int)$value['value_id'] .",
                   custom_value = '". database::input($value['custom_value']) ."',
                   price_operator = '". database::input($value['price_operator']) ."',
+                  selected = '". database::input($default_selection) ."',
                   $sql_currencies
                   priority = ". ++$j ."
                 where product_id = ". (int)$this->data['id'] ."
