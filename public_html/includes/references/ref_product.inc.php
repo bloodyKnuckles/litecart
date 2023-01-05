@@ -291,6 +291,7 @@
 
             // Price Adjust
               $value['price_adjust'] = 0;
+              $value['price_subtotal'] = 0;
 
               if ((!empty($value[$this->_currency_code]) && (float)$value[$this->_currency_code] != 0) || (!empty($value[settings::get('store_currency_code')]) && (float)$value[settings::get('store_currency_code')] != 0)) {
 
@@ -302,14 +303,16 @@
                     } else {
                       $value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
                     }
+                    $value['price_subtotal'] = $this->price + $value['price_adjust'];
                     break;
 
                   case '%':
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $this->price * currency::convert((float)$value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) / 100;
+                      $value['price_adjust'] = $this->price * currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) / 100;
                     } else {
                       $value['price_adjust'] = $this->price * (float)$value[settings::get('store_currency_code')] / 100;
                     }
+                    $value['price_subtotal'] = $this->price + $value['price_adjust'];
                     break;
 
                   case '*':
@@ -318,6 +321,7 @@
                     } else {
                       $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')];
                     }
+                    $value['price_subtotal'] = $this->price + $value['price_adjust'];
                     break;
 
                   case '=':
@@ -326,6 +330,7 @@
                     } else {
                       $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
                     }
+                    $value['price_adjust'] = $value['price_subtotal'] - $this->price;
                     break;
 
                   default:
@@ -336,6 +341,7 @@
 
               if ($value['price_adjust'] && !empty($this->campaign['price'])) {
                 $value['price_adjust'] = $value['price_adjust'] * $this->campaign['price'] / $this->price;
+                $value['price_subtotal'] = $this->campaign['price'];
               }
 
               $option['values'][] = $value;
