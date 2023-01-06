@@ -261,22 +261,22 @@
     var tax = <?php echo currency::format_raw($total_tax); ?>;
 
     $(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
-      if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
-      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+      if ($(this).data('price-adjust')) regular_price = ('=' === $(this).data('price-operator'))? $(this).data('price-subtotal'): regular_price + $(this).data('price-adjust');
+      if ($(this).data('price-adjust')) sales_price = ('=' === $(this).data('price-operator'))? $(this).data('price-subtotal'): sales_price + $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax = ('=' === $(this).data('price-operator'))? $(this).data('tax-subtotal'): tax + $(this).data('tax-adjust');
     });
 
     $(this).find('select option:checked').each(function(){
-      if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
-      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+      if ($(this).data('price-adjust')) regular_price = ('=' === $(this).data('price-operator'))? $(this).data('price-subtotal'): regular_price + $(this).data('price-adjust');
+      if ($(this).data('price-adjust')) sales_price = ('=' === $(this).data('price-operator'))? $(this).data('price-subtotal'): sales_price + $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax = ('=' === $(this).data('price-operator'))? $(this).data('tax-subtotal'): tax + $(this).data('tax-adjust');
     });
 
     $(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
       if ($(this).val() != '') {
-        if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-        if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
-        if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+        if ($(this).data('price-adjust')) regular_price = ('=' === $(this).data('price-operator'))? $(this).data('price-subtotal'): regular_price + $(this).data('price-adjust');
+        if ($(this).data('price-adjust')) sales_price = ('=' === $(this).data('price-operator'))? $(this).data('price-subtotal'): sales_price + $(this).data('price-adjust');
+        if ($(this).data('tax-adjust')) tax = ('=' === $(this).data('price-operator'))? $(this).data('tax-subtotal'): tax + $(this).data('tax-adjust');
       }
     });
 
